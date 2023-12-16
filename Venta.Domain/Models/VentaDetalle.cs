@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Venta.Domain
+namespace Venta.Domain.Models
 {
     public class VentaDetalle
     {

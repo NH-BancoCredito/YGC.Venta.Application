@@ -4,9 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Venta.Domain
+namespace Venta.Application.CasosUso.AdministrarProductos.ConsultarProductos
 {
-    public class Producto
+    public class ConsultarProductosResponse
+    {
+        public IEnumerable<ConsultaProducto> Resultado { get; set; }
+    }
+
+    public class ConsultaProducto
     {
         public int IdProducto { get; set; }
         public string Nombre { get; set; }
@@ -15,8 +20,5 @@ namespace Venta.Domain
         public decimal PrecioUnitario { get; set; }
 
         public int IdCategoria { get; set; }
-        public virtual Categoria Categoria { get; set; }
-
-        public virtual IEnumerable<VentaDetalle> VentaDetalles { get; set; }
     }
 }

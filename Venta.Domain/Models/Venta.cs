@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Venta.Domain
+namespace Venta.Domain.Models
 {
     public class Venta
     {
@@ -25,7 +25,7 @@ namespace Venta.Domain
         {
             get
             {
-                return this.Detalle?.Sum(item => item.SubTotal) ?? 0;
+                return Detalle?.Sum(item => item.SubTotal) ?? 0;
             }
             private set { }
         }
