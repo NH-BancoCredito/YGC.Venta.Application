@@ -33,6 +33,5 @@ namespace Venta.Domain.Models
         public virtual Cliente Cliente { get; set; }
 
         public virtual IEnumerable<VentaDetalle> Detalle { get; set; }
-
     }
 }

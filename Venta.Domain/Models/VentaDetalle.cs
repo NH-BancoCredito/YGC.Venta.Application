@@ -30,6 +30,9 @@ namespace Venta.Domain.Models
         public virtual Producto Producto { get; set; }
 
         public virtual Venta Venta { get; set; }
-
     }
 }
+
+    //public int IdProducto { get; set; }
+    //public int Cantidad { get; set; }
+    //public int Precio { get; set; }

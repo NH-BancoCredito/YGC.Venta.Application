@@ -15,7 +15,7 @@ namespace Venta.Domain.Repositories
 
         Task<bool> Eliminar(Producto entity);
 
-        //Task<Producto> Consultar(int id);
+        Task<Producto> ConsultarById(int id);
 
         Task<IEnumerable<Producto>> Consultar(string nombre);
         /*bool Adicionar(Producto entity);
