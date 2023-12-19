@@ -27,7 +27,7 @@ namespace Venta.Tests.RegistroVentas.Testes
             _mapper = new MapperConfiguration(c => c.AddProfile<RegistrarVentaMapper>()).CreateMapper();
             _ventaRepository = Substitute.For<IVentaRepository>();
             _productoRepository = Substitute.For<IProductoRepository>();
-            _registrarVentaHandler = Substitute.For<RegistrarVentaHandler>(_registrarVentaHandler, _productoRepository, _mapper);
+            _registrarVentaHandler = Substitute.For<RegistrarVentaHandler>(_ventaRepository, _productoRepository, _mapper);
         }
 
 
@@ -36,11 +36,11 @@ namespace Venta.Tests.RegistroVentas.Testes
         {
             var request = setVentaRequest();
 
-            var objProducto = new Producto() { IdProducto = 2, Stock=30};
-            var objVenta = new Domain.Models.Venta();
+            var objProducto = new Producto() { IdProducto = 2, Stock=30,StockMinimo=1};
+            //var objVenta = new Domain.Models.Venta();
 
             _productoRepository.ConsultarById(default(int)).ReturnsForAnyArgs(objProducto);
-            //_ventaRepository.Registrar(default).ReturnsForAnyArgs(true);
+            _ventaRepository.Registrar(default).ReturnsForAnyArgs(true);
 
             var resultado = await _registrarVentaHandler.Registrar(request);
 
@@ -51,7 +51,7 @@ namespace Venta.Tests.RegistroVentas.Testes
         private RegistrarVentaRequest setVentaRequest()
         {
             var registrarVentaDetalleRequest = new List<RegistrarVentaDetalleRequest>();
-            registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 2, IdProducto = 3, Precio = 10 });
+            registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 2, IdProducto = 2, Precio = 10 });
             registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 4, IdProducto = 10, Precio = 30 });
             registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 5, IdProducto = 7, Precio = 30 });
             var registrarVentaRequest = new RegistrarVentaRequest() { IdCliente = 2, Productos = registrarVentaDetalleRequest };
