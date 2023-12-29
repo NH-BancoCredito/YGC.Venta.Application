@@ -13,7 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 
 //Capa de infraestructura
-builder.Services.AddInfraestructure();
+var connectionString = builder.Configuration.GetConnectionString("dbVenta-cnx");
+builder.Services.AddInfraestructure(connectionString);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
