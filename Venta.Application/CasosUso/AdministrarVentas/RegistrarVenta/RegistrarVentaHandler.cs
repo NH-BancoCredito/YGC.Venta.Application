@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,8 @@ using Models = Venta.Domain.Models;
 
 namespace Venta.Application.CasosUso.AdministrarVentas.RegistrarVenta
 {
-    public  class RegistrarVentaHandler
+    public  class RegistrarVentaHandler :
+        IRequestHandler<RegistrarVentaRequest, RegistrarVentaResponse>
     {
         private readonly IVentaRepository _ventaRepository;
         private readonly IProductoRepository _productoRepository;
@@ -26,7 +28,7 @@ namespace Venta.Application.CasosUso.AdministrarVentas.RegistrarVenta
             _mapper = mapper;
         }
 
-        public async Task<RegistrarVentaResponse> Registrar(RegistrarVentaRequest request)
+        public async Task<RegistrarVentaResponse> Handle(RegistrarVentaRequest request, CancellationToken cancellationToken)
         {
             var response = new RegistrarVentaResponse();
 
