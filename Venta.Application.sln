@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Venta.Application", "Venta.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infraestructura", "Infraestructura", "{F8ABAC2C-4EB2-4B43-A413-F4B559FE7EF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venta.Infrastructure", "Venta.Infrastructure\Venta.Infrastructure.csproj", "{A84E0C0A-1AE9-46B2-9B4B-9B8BD3DEC2FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Venta.Infrastructure", "Venta.Infrastructure\Venta.Infrastructure.csproj", "{A84E0C0A-1AE9-46B2-9B4B-9B8BD3DEC2FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{0F99C486-CA93-4406-BD25-BDC27FF41EA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venta.Api", "Venta.Api\Venta.Api.csproj", "{29CBD4E1-3B1B-4A84-8C78-E3957F3ADEE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Venta.Api", "Venta.Api\Venta.Api.csproj", "{29CBD4E1-3B1B-4A84-8C78-E3957F3ADEE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

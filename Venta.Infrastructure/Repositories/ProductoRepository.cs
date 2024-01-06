@@ -38,9 +38,17 @@ namespace Venta.Infrastructure.Repositories
             
         }
 
-        public Task<Producto> ConsultarById(int id)
+        public async Task<Producto> ConsultarById(int id)
         {
-            throw new NotImplementedException();
+            
+            try
+            {
+                return await _context.Productos.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public Task<bool> Eliminar(Producto entity)

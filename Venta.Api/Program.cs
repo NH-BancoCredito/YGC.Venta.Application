@@ -1,3 +1,4 @@
+using Venta.Api.Middleware;
 using Venta.Application;
 using Venta.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+//Adicionar middleware customizado para tratar las excepciones
+app.UseCustomExceptionHandler();
 
 app.MapControllers();
 

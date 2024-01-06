@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Venta.Application.Common;
 
 namespace Venta.Application.CasosUso.AdministrarVentas.RegistrarVenta
 {
-    public class RegistrarVentaRequest : IRequest<RegistrarVentaResponse>
+    public class RegistrarVentaRequest : IRequest<IResult>
     {
 
         public int IdCliente { get; set; }

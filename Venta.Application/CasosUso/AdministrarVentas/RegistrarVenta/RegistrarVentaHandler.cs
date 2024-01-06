@@ -6,16 +6,15 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using Venta.Application.CasosUso.AdministrarProductos.ConsultarProductos;
-using Venta.Domain.Models;
+using Venta.Application.Common;
 using Venta.Domain.Repositories;
-//using static System.Runtime.InteropServices.JavaScript.JSType;
 using Models = Venta.Domain.Models;
+
 
 namespace Venta.Application.CasosUso.AdministrarVentas.RegistrarVenta
 {
     public  class RegistrarVentaHandler :
-        IRequestHandler<RegistrarVentaRequest, RegistrarVentaResponse>
+        IRequestHandler<RegistrarVentaRequest, IResult>
     {
         private readonly IVentaRepository _ventaRepository;
         private readonly IProductoRepository _productoRepository;
@@ -28,9 +27,9 @@ namespace Venta.Application.CasosUso.AdministrarVentas.RegistrarVenta
             _mapper = mapper;
         }
 
-        public async Task<RegistrarVentaResponse> Handle(RegistrarVentaRequest request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(RegistrarVentaRequest request, CancellationToken cancellationToken)
         {
-            var response = new RegistrarVentaResponse();
+            IResult response = null;
 
             //Aplicando el automapper para convertir el objeto Request a venta dominio
 
@@ -52,40 +51,44 @@ namespace Venta.Application.CasosUso.AdministrarVentas.RegistrarVenta
 
 
 
-                //2 - Validar si existe stock suficiente - TODO
-                if(detalle.Cantidad> productoEncontrado.Stock)
-                {
-                    throw new Exception($"El producto {detalle.IdProducto} no tiene stock, solo hay en almacen {detalle.Cantidad}");
+                ////2 - Validar si existe stock suficiente - TODO
+                //if(detalle.Cantidad> productoEncontrado.Stock)
+                //{
+                //    throw new Exception($"El producto {detalle.IdProducto} no tiene stock, solo hay en almacen {detalle.Cantidad}");
 
-                }
+                //}
 
-                //3 - Reservar el stock del producto - TODO
-                if (detalle.Cantidad < productoEncontrado.StockMinimo)
-                {
-                    throw new Exception($"El producto {detalle.IdProducto} no cumple con el stock mínimo de {productoEncontrado.StockMinimo}");
+                ////3 - Reservar el stock del producto - TODO
+                //if (detalle.Cantidad < productoEncontrado.StockMinimo)
+                //{
+                //    throw new Exception($"El producto {detalle.IdProducto} no cumple con el stock mínimo de {productoEncontrado.StockMinimo}");
 
-                }
-                detalle.Producto = productoEncontrado;
+                //}
+                //detalle.Producto = productoEncontrado;
 
-                //VentaDetalleFinal.Add(detalle);
+                ////VentaDetalleFinal.Add(detalle);
 
-                //3.1 --Si sucedio algun erro al reservar el producto , retornar una exepcion
-                try
-                {
+                ////3.1 --Si sucedio algun erro al reservar el producto , retornar una exepcion
+                //try
+                //{
 
-                }catch(Exception ex)
-                {
-                    throw new Exception($"Error al reservar");
-                }
+                //}catch(Exception ex)
+                //{
+                //    throw new Exception($"Error al reservar");
+                //}
 
             }
             //venta.Detalle = VentaDetalleFinal;
-            if(!(await _ventaRepository.Registrar(venta)))
-            {
-                throw new Exception($"Error al registrar venta, código {venta.IdVenta}");
-            }
-            response.VentaRegistrada = true;
-            
+            //if(!(await _ventaRepository.Registrar(venta)))
+            //{
+            //    throw new Exception($"Error al registrar venta, código {venta.IdVenta}");
+            //}
+            //response.VentaRegistrada = true;
+
+            await _ventaRepository.Registrar(venta);
+
+            response = new SuccessResult<int>(venta.IdVenta);
+
             //Registrar
             /// SI todo esta OK
             /// Registrar la venta - TODO
