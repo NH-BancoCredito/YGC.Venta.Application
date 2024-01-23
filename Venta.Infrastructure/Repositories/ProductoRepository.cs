@@ -19,9 +19,21 @@ namespace Venta.Infrastructure.Repositories
         {
             _context = context;
         }
-        public Task<bool> Adicionar(Producto entity)
+        public  async Task<bool> Adicionar(Producto entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                entity.PrecioUnitario = Convert.ToDecimal(entity.PrecioUnitario);
+              _context.Productos.Add(entity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new NotImplementedException();
+
+            }
+
         }
 
         public async Task<IEnumerable<Producto>> Consultar(string nombre)
@@ -56,9 +68,40 @@ namespace Venta.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> Modificar(Producto entity)
+        public async Task<bool> Modificar(Producto entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var productoencontrado = await _context.Productos.FindAsync(entity.IdProducto);
+                productoencontrado.Stock = entity.Stock;
+                await _context.SaveChangesAsync();
+                return true;
+                //_context.Entry..Attach(entity);
+                //await _context.Attach(entity);
+
+
+                //context.Entry.Attach(entidad);
+                //context.Entry(entidad).Property(x => x.campo1).IsModified = true;
+                //db.SaveChanges();
+                //db.Entry(user).Property(x => x.Password).IsModified = true;
+                //context.Entry.Attach(entidad);
+                //context.Entry(entidad).Property(x => x.campo1).IsModified = true;
+                //db.SaveChanges();
+
+                //db.Entry(user).Property(x => x.Password).IsModified = true;
+                return true;
+
+                //context.Entry.Attach(entidad);
+                //context.Entry(entidad).Property(x => x.campo1).IsModified = true;
+                //db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new NotImplementedException();
+
+            }
+
         }
     }
 }
+
