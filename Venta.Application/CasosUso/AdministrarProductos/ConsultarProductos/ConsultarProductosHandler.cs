@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Microsoft.Extensions.Logging;
+using AutoMapper;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,15 @@ namespace Venta.Application.CasosUso.AdministrarProductos.ConsultarProductos
     {
         private readonly IProductoRepository _productoRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public ConsultarProductosHandler(IProductoRepository productoRepository, IMapper mapper)
+        public ConsultarProductosHandler(IProductoRepository productoRepository, IMapper mapper
+            , ILogger<ConsultarProductosHandler> logger)
         {
             _productoRepository = productoRepository;
             _mapper = mapper;
+            _logger = logger;
+
         }
 
         /* public ConsultarProductosResponse Handle(ConsultarProductosRequest request)
@@ -51,6 +56,7 @@ namespace Venta.Application.CasosUso.AdministrarProductos.ConsultarProductos
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 response = new FailureResult();
                 return response;
             }

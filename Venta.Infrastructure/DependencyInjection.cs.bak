@@ -36,9 +36,8 @@ namespace Venta.Infrastructure
                    // options.Timeout = TimeSpan.FromMilliseconds(5000);
                 }
                 ).SetHandlerLifetime(TimeSpan.FromMinutes(5))
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy())
-                .AddPolicyHandler(GetBulkHeadPolicy());
+                //.AddPolicyHandler(GetRetryPolicy());
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
 
             services.AddDbContext<VentaDbContext>(
@@ -67,21 +66,20 @@ namespace Venta.Infrastructure
             Action onReset = null;
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
-                //.OrTransientHttpError()
-                .OrResult(c => !c.IsSuccessStatusCode)
+                .OrTransientHttpError()
                 .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30),
                 onBreak, onReset
                 );
 
 
         }
-		private static IAsyncPolicy<HttpResponseMessage> GetBulkHeadPolicy()
-        {
-            return Policy.BulkheadAsync<HttpResponseMessage>(1000, int.MaxValue);
-        }
+
 
         public static void AddRepositories(this IServiceCollection services, Assembly assembly)
+
         {
+
+
             var respositoryTypes = assembly
                 .GetExportedTypes().Where(item => item.GetInterface(nameof(IRepository)) != null).ToList();
 
@@ -98,8 +96,6 @@ namespace Venta.Infrastructure
         public static void AddLogger(this IServiceCollection services, string connectionStringDbLog, string collectionName)
         {
             var serilogLogger = new LoggerConfiguration()
-				//.MinimumLevel.Error()
-                .MinimumLevel.Information()
                 .Enrich.FromLogContext()
                 .WriteTo.MongoDB(connectionStringDbLog, collectionName: collectionName)
                 .CreateLogger();

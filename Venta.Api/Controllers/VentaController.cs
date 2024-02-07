@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Venta.Application.CasosUso.AdministrarVentas.RegistrarVenta;
 
@@ -6,6 +7,7 @@ namespace Venta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VentaController : ControllerBase
     {
         private readonly IMediator _mediator;

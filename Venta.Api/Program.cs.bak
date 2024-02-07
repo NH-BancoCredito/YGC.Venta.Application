@@ -1,6 +1,4 @@
 using Steeltoe.Extensions.Configuration.ConfigServer;
-using Venta.Api;
-using Venta.Api.Configurations;
 using Venta.Api.Middleware;
 using Venta.Application;
 using Venta.Infrastructure;
@@ -28,9 +26,6 @@ builder.Services.AddApplication();
 var connectionString = builder.Configuration["dbVenta-cnx"];
 //builder.Services.AddInfraestructure(connectionString);
 builder.Services.AddInfraestructure(builder.Configuration);
-builder.Services.AddAthenticationByJWT(); //autorizcion
-builder.Services.AddHealthCheckConfiguration(builder.Configuration); //health
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,9 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();//thentication
 app.UseAuthorization();
-app.UseHealthCheckConfiguration();//helthy
 
 //Adicionar middleware customizado para tratar las excepciones
 app.UseCustomExceptionHandler();
