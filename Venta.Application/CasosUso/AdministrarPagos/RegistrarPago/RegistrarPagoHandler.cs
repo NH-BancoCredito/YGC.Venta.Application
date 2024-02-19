@@ -15,7 +15,7 @@ namespace Venta.Application.CasosUso.AdministrarPagos.RegistroPago
     public class RegistrarPagoHandler : IRequestHandler<RegistrarPagoRequest, IResult>
     {
         private readonly IPagosService _pagoService;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper; 
 
         public RegistrarPagoHandler(IPagosService pagosService, IMapper mapper)
         {
