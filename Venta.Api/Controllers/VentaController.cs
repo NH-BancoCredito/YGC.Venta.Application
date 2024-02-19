@@ -7,7 +7,7 @@ namespace Venta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class VentaController : ControllerBase
     {
         private readonly IMediator _mediator;

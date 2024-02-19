@@ -19,6 +19,10 @@ using Polly.Extensions.Http;
 using Polly;
 using Polly.CircuitBreaker;
 using Serilog;
+using Venta.Domain.Service.Events;
+using Venta.Infrastructure.Services.Events;
+using Confluent.Kafka;
+using Stocks.Infrastructure.Services.Events;
 namespace Venta.Infrastructure
 {
     public static class DependencyInjection
@@ -28,8 +32,8 @@ namespace Venta.Infrastructure
     )
         {
             var appConfiguration = new AppConfiguration(configInfo);
-
-            var httpClientBuilder = services.AddHttpClient<IStocksService, StockService>(
+            //var httpClientBuilder = 
+                services.AddHttpClient<IStocksService, StockService>(
                 options =>
                 {
                     options.BaseAddress = new Uri(appConfiguration.UrlBaseServicioStock);
@@ -40,6 +44,19 @@ namespace Venta.Infrastructure
                 .AddPolicyHandler(GetCircuitBreakerPolicy())
                 .AddPolicyHandler(GetBulkHeadPolicy());
 
+            //var httpClientPagoBuilder = 
+                services.AddHttpClient<IPagosService, PagosService>(
+                options =>
+                {
+                    options.BaseAddress = new Uri(appConfiguration.UrlBaseServicioPago);
+                    //options.Timeout = TimeSpan.FromMilliseconds(30000);
+                }
+                ).SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                .AddPolicyHandler(GetRetryPolicy2())
+                .AddPolicyHandler(GetCircuitBreakerPolicy2())
+                .AddPolicyHandler(GetBulkHeadPolicy());
+
+
 
             services.AddDbContext<VentaDbContext>(
                 options => options.UseSqlServer(appConfiguration.ConexionDBVentas)
@@ -48,15 +65,25 @@ namespace Venta.Infrastructure
             services.AddRepositories(Assembly.GetExecutingAssembly());
             services.AddLogger(appConfiguration.LogMongoServerDB, appConfiguration.LogMongoDbCollection);
 
+            services.AddProducer();
+            services.AddEventServices();
+
         }
         private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
         {
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
+                .WaitAndRetryAsync(3,
+                            retryAttempts => TimeSpan.FromSeconds(Math.Pow(2, retryAttempts)));
+        }
+        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy2()
+        {
+
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
                 .WaitAndRetryAsync(2,
                             retryAttempts => TimeSpan.FromSeconds(Math.Pow(2, retryAttempts)));
         }
-
         private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
         {
             Action<DelegateResult<HttpResponseMessage>, TimeSpan> onBreak = (result, timeSpan) =>
@@ -69,13 +96,26 @@ namespace Venta.Infrastructure
                 .HandleTransientHttpError()
                 //.OrTransientHttpError()
                 .OrResult(c => !c.IsSuccessStatusCode)
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30),
+                .CircuitBreakerAsync(3, TimeSpan.FromSeconds(30),
                 onBreak, onReset
                 );
-
-
         }
-		private static IAsyncPolicy<HttpResponseMessage> GetBulkHeadPolicy()
+        private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy2()
+        {
+            Action<DelegateResult<HttpResponseMessage>, TimeSpan> onBreak = (result, timeSpan) =>
+            {
+                Console.WriteLine(result);
+
+            };
+            Action onReset = null;
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(c => !c.IsSuccessStatusCode)
+                .CircuitBreakerAsync(3, TimeSpan.FromMinutes(5),
+                onBreak, onReset
+                );
+        }
+        private static IAsyncPolicy<HttpResponseMessage> GetBulkHeadPolicy()
         {
             return Policy.BulkheadAsync<HttpResponseMessage>(1000, int.MaxValue);
         }
@@ -154,5 +194,23 @@ namespace Venta.Infrastructure
                 return handler;
             });
         }
+        
+        private static IServiceCollection AddProducer(this IServiceCollection services)
+        {
+            var config = new ProducerConfig
+            {
+                Acks = Acks.Leader,
+                BootstrapServers = "127.0.0.1:9092",
+                ClientId = Dns.GetHostName(),
+            };
+
+            services.AddSingleton<IPublisherFactory>(sp => new PublisherFactory(config));
+            return services;
+        }
+        private static void AddEventServices(this IServiceCollection services)
+        {
+            services.AddSingleton<IEventSender, EventSender>();
+        }
+
     }
 }

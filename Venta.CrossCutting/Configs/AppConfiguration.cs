@@ -32,6 +32,14 @@ namespace Venta.CrossCutting.Configs
             }
             private set { }
         }
+        public string UrlBaseServicioPago
+        {
+            get
+            {
+                return _configInfo["url-base-servicio-pago"];
+            }
+            private set { }
+        }
         public string LogMongoServerDB
         {
             get

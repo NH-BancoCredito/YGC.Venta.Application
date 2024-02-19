@@ -48,14 +48,14 @@ namespace Venta.Tests.RegistroVentas.Testes
 
 
         }
-        private RegistrarVentaRequest setVentaRequest()
-        {
-            var registrarVentaDetalleRequest = new List<RegistrarVentaDetalleRequest>();
-            registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 2, IdProducto = 2, Precio = 10 });
-            registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 4, IdProducto = 10, Precio = 30 });
-            registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 5, IdProducto = 7, Precio = 30 });
-            var registrarVentaRequest = new RegistrarVentaRequest() { IdCliente = 2, Productos = registrarVentaDetalleRequest };
-            return registrarVentaRequest;
-        }
+        //private RegistrarVentaRequest setVentaRequest()
+        //{
+        //    var registrarVentaDetalleRequest = new List<RegistrarVentaDetalleRequest>();
+        //    registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 2, IdProducto = 2, Precio = 10 });
+        //    registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 4, IdProducto = 10, Precio = 30 });
+        //    registrarVentaDetalleRequest.Add(new RegistrarVentaDetalleRequest() { Cantidad = 5, IdProducto = 7, Precio = 30 });
+        //    var registrarVentaRequest = new RegistrarVentaRequest() { IdCliente = 2, Productos = registrarVentaDetalleRequest };
+        //    return registrarVentaRequest;
+        //}
     }
 }

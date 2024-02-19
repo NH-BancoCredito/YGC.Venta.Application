@@ -39,10 +39,10 @@ namespace Venta.Test.Aplication.Testes
             //IEnumerable<Producto> m_oEnum = AddLista();
             //_productoRepository.Consultar(default).ReturnsForAnyArgs(m_oEnum);
             //_mapper.Map<IEnumerable<ConsultaProducto>>(default).ReturnsForAnyArgs(response.Resultado);
-            
-            // response = await _consultarProductosHandler.Handle(request);
 
-            //Assert.True(response.Resultado.ToList().Count>0);
+            //response = await _consultarProductosHandler.Handle(request);
+
+            //Assert.True(response.Resultado.ToList().Count > 0);
 
         }
 
